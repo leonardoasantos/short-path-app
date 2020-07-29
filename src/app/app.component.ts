@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   public constructor(private bfs: BreadthFirstSearchService){};
 
   ngOnInit() {
-    this.gridSize = 10;
+    this.gridSize = 50;
     this.initGrid();
   }
 
@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
     this.grid[4][2].setState(GridState.START_POINT);
     this.startPoint = this.grid[4][2];
 
-    this.grid[8][9].setState(GridState.TARGET_POINT);
-    this.targetPoint = this.grid[8][9];
+    this.grid[30][19].setState(GridState.TARGET_POINT);
+    this.targetPoint = this.grid[30][19];
   }
  
   public addGridObstacle(row: number, col: number): void {

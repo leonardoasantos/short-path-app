@@ -1,38 +1,47 @@
 import { Injectable } from '@angular/core';
+import { AbstractSearchService} from './abstract-search.service';
 import { GridCell, GridState } from '../interfaces/grid-cell.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BreadthFirstSearchService {
-
-  constructor() { }
+export class BreadthFirstSearchService extends AbstractSearchService {
 
   public async search(grid: GridCell[][], start: GridCell, target: GridCell): Promise<void> {
     var queue: GridCell[] = [];
+    var isAddedToQueue: boolean[][] = this.buildBooleanGrid(grid.length);
 
     queue.push(start);
-    
+    isAddedToQueue[start.getRow()][start.getCol[0]];
+
     var neighbors: GridCell[];
 
     while(queue.length > 0) {
-      // Pop the first cell from the queue.
-      var cell: GridCell = queue.shift();
+      
+      // Visit first cell from the queue.
+      var currentCell: GridCell = queue.shift();
+      await this.visiteNode(grid, currentCell);
+      
+      if (currentCell.equals(target)) {
+        console.log("Target found!")
+        return;
+      }
 
       // Find all non-visited neighbors
-      neighbors = await this.findNeighbors(cell, grid);
+      neighbors = this.findNeighbors(currentCell, grid);
       
-      // For each neighbor found: check if is the target. otherwise, add to the queue.
+      // Add each neighbor to the queue.
       for(var neighbor of neighbors) {
-        if (target.equals(neighbor)) {
-          return;
+        if (!isAddedToQueue[neighbor.getRow()][neighbor.getCol()]) {  
+          isAddedToQueue[neighbor.getRow()][neighbor.getCol()] = true;
+          queue.push(neighbor);
         }
-        queue.push(neighbor);
       }
+
     }
-  }
-  
-  private async findNeighbors(cell: GridCell, grid: GridCell[][]): Promise<GridCell[]> {
+  }    
+
+  private findNeighbors(cell: GridCell, grid: GridCell[][]): GridCell[] {
     var lastValidIndex: number = grid.length - 1;
     var neighbors: GridCell[] = [];    
     
@@ -44,23 +53,15 @@ export class BreadthFirstSearchService {
 
     for (var row = minRow; row <= maxRow; row++) {
       for (var col = minCol; col <= maxCol; col++) {
-        
-        var state = grid[row][col].state;
-
-        if(state == GridState.EMPTY || state == GridState.TARGET_POINT) {
-          
-          if(state != GridState.TARGET_POINT) {
-            grid[row][col].setState(GridState.VISITED);
+          if (grid[row][col].state != GridState.BLOCKED) {
+            neighbors.push(grid[row][col]);
           }
-          
-          neighbors.push(grid[row][col]);
-
-          await new Promise(r => setTimeout(r, 100));
-        }
-
       }
     }
 
     return neighbors;
   }
+
+  
+
 }
