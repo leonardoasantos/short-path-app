@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractSearchService} from './abstract-search.service';
+import { Grid } from '../interfaces/grid.interface';
 import { GridCell, GridState } from '../interfaces/grid-cell.interface';
 
 @Injectable({
@@ -7,12 +8,15 @@ import { GridCell, GridState } from '../interfaces/grid-cell.interface';
 })
 export class BreadthFirstSearchService extends AbstractSearchService {
 
-  public async search(grid: GridCell[][], start: GridCell, target: GridCell): Promise<void> {
+  public async search(grid: Grid): Promise<void> {
     var queue: GridCell[] = [];
-    var isAddedToQueue: boolean[][] = this.buildBooleanGrid(grid.length);
+    var isAddedToQueue: boolean[][] = this.buildBooleanGrid(grid.getSize());
 
-    queue.push(start);
-    isAddedToQueue[start.getRow()][start.getCol[0]];
+    var startPoint = grid.getStartPoint();
+    var targetPoint = grid.getTargetPoint();
+
+    queue.push(startPoint);
+    isAddedToQueue[startPoint.getRow()][startPoint.getCol()];
 
     var neighbors: GridCell[];
 
@@ -20,9 +24,9 @@ export class BreadthFirstSearchService extends AbstractSearchService {
       
       // Visit first cell from the queue.
       var currentCell: GridCell = queue.shift();
-      await this.visiteNode(grid, currentCell);
+      await this.visitCell(grid, currentCell);
       
-      if (currentCell.equals(target)) {
+      if (currentCell.equals(targetPoint)) {
         console.log("Target found!")
         return;
       }
@@ -41,8 +45,8 @@ export class BreadthFirstSearchService extends AbstractSearchService {
     }
   }    
 
-  private findNeighbors(cell: GridCell, grid: GridCell[][]): GridCell[] {
-    var lastValidIndex: number = grid.length - 1;
+  private findNeighbors(cell: GridCell, grid: Grid): GridCell[] {
+    var lastValidIndex: number = grid.getSize() - 1;
     var neighbors: GridCell[] = [];    
     
     var minRow: number = cell.getRow() > 0 ? cell.getRow() - 1 : 0;
@@ -53,8 +57,8 @@ export class BreadthFirstSearchService extends AbstractSearchService {
 
     for (var row = minRow; row <= maxRow; row++) {
       for (var col = minCol; col <= maxCol; col++) {
-          if (grid[row][col].state != GridState.BLOCKED) {
-            neighbors.push(grid[row][col]);
+          if (grid.get(row, col).state != GridState.BLOCKED) {
+            neighbors.push(grid.get(row,col));
           }
       }
     }

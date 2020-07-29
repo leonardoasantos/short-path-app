@@ -4,7 +4,7 @@
   <!-- Main Grid -->
   <div class="col-md-8">
     <div class="grid-container">      
-      <div *ngFor="let row of grid; let i = index" class="row">
+      <div *ngFor="let row of grid.getGrid(); let i = index" class="row">
         <div *ngFor="let cell of row; let j = index">
           <div class="grid-cell {{cell.class}}" (click)="addGridObstacle(i,j)"></div>
         </div>      
