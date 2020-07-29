@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GridCell, GridState, GridClass } from './interfaces/grid-cell.interface';
+import { BreadthFirstSearchService } from './services/breadth-first-search.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,10 @@ export class AppComponent implements OnInit {
   public grid: GridCell[][];
 
   private gridSize: number;
+  private startPoint: GridCell;
+  private targetPoint: GridCell;
+
+  public constructor(private bfs: BreadthFirstSearchService){};
 
   ngOnInit() {
     this.gridSize = 10;
@@ -20,50 +25,26 @@ export class AppComponent implements OnInit {
   private initGrid(): void {
     this.grid = [];
 
-    for (var i = 0; i < this.gridSize; i++) {
-      var row = [];
-      for (var j = 0; j < this.gridSize; j++) {
-        row.push({state: GridState.EMPTY, class: GridClass.CLASS_EMPTY});
+    for (var row = 0; row < this.gridSize; row++) {
+      var rowArray = [];
+      for (var col = 0; col < this.gridSize; col++) {
+        rowArray.push(new GridCell(row, col, GridState.EMPTY));
       }
-      this.grid.push(row);
+      this.grid.push(rowArray);
     }
 
-    this.setCellState(4, 2, GridState.START_POINT);
-    this.setCellState(8, 9, GridState.TARGET_POINT);
+    this.grid[4][2].setState(GridState.START_POINT);
+    this.startPoint = this.grid[4][2];
+
+    this.grid[8][9].setState(GridState.TARGET_POINT);
+    this.targetPoint = this.grid[8][9];
   }
  
-  private setCellState(row: number, col: number, state: GridState) {
-    this.grid[row][col].state = GridState.START_POINT;
-    this.grid[row][col].class = this.getClassFromState(state);
-  }
-  
-  
-
   public addGridObstacle(row: number, col: number): void {
-    this.setCellState(row, col, GridState.BLOCKED);
+    this.grid[row][col].setState(GridState.BLOCKED);
   }
 
-  private getClassFromState(state: GridState): GridClass {
-    var returnClass: GridClass;
-
-    switch (state) {
-      case GridState.START_POINT:
-        returnClass = GridClass.CLASS_START_POINT;
-        break;
-      case GridState.TARGET_POINT:
-        returnClass = GridClass.CLASS_TARGET_POINT;
-        break;
-      case GridState.BLOCKED:
-        returnClass = GridClass.CLASS_BLOCKED;
-        break;
-      case GridState.VISITED:
-        returnClass = GridClass.CLASS_VISITED;
-        break;
-      default:
-        returnClass = GridClass.CLASS_EMPTY;
-        break;
-    }
-
-    return returnClass;
+  public breadthFirstSearch(): void {
+    this.bfs.search(this.grid, this.startPoint, this.targetPoint);
   }
 }
