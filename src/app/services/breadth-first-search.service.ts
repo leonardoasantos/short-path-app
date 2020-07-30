@@ -51,47 +51,4 @@ export class BreadthFirstSearchService extends AbstractSearchService {
 
     return null;
   }    
-
-  // private findNeighbors(cell: GridCell, grid: Grid): GridCell[] {
-  //   var lastValidIndex: number = grid.getSize() - 1;
-  //   var neighbors: GridCell[] = [];    
-    
-  //   var cellRow = cell.getRow();
-  //   var cellCol = cell.getCol();
-
-  //   if (cellRow > 0) {
-  //     neighbors.push(grid.get(cellRow - 1, cellCol));
-  //   }
-
-  //   if (cellRow < lastValidIndex) {
-  //     neighbors.push(grid.get(cellRow + 1, cellCol));
-  //   }
-
-  //   if (cellCol > 0) {
-  //     neighbors.push(grid.get(cellRow, cellCol - 1));
-  //   }
-
-  //   if (cellCol < lastValidIndex) {
-  //     neighbors.push(grid.get(cellRow, cellCol + 1));
-  //   }
-
-  //   // var minRow: number = cell.getRow() > 0 ? cell.getRow() - 1 : 0;
-  //   // var maxRow: number = cell.getRow() == lastValidIndex ? lastValidIndex : cell.getRow() + 1;
-
-  //   // var minCol: number = cell.getCol() > 0 ? cell.getCol() - 1 : 0;
-  //   // var maxCol: number = cell.getCol() == lastValidIndex ? lastValidIndex : cell.getCol() + 1;
-
-  //   // for (var row = minRow; row <= maxRow; row++) {
-  //   //   for (var col = minCol; col <= maxCol; col++) {
-  //   //       if (grid.get(row, col).state != GridState.BLOCKED) {
-  //   //         neighbors.push(grid.get(row,col));
-  //   //       }
-  //   //   }
-  //   // }
-
-  //   return neighbors;
-  // }
-
-  
-
 }
