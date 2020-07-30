@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Grid } from './interfaces/grid.interface';
+import { GridCell } from './interfaces/grid-cell.interface';
 import { UserSelectionState } from './interfaces/user-selection-state.interface';
 import { BreadthFirstSearchService } from './services/breadth-first-search.service';
 
@@ -14,19 +15,21 @@ export class AppComponent implements OnInit {
   
   public userState: UserSelectionState;
 
+  public searchResultMessage: string
+
   private gridSize: number;
 
   public constructor(private bfs: BreadthFirstSearchService){};
 
   ngOnInit() {
     this.gridSize = 50;
-    this.userState = UserSelectionState.SELECT_START_POINT;
-    this.grid = new Grid(this.gridSize);
+    this.resetGrid();
   }
   
   public resetGrid(): void {
     this.grid = new Grid(this.gridSize);
     this.userState = UserSelectionState.SELECT_START_POINT;
+    this.searchResultMessage = null;
   }
 
   public onGridClick(row: number, col: number) {
@@ -78,18 +81,34 @@ export class AppComponent implements OnInit {
     this.userState = UserSelectionState.ADD_OBSTACLES;
   }
   
-  public async breadthFirstSearch(): Promise<void> {
-    this.userState = UserSelectionState.SEARCH_RUNNING;
-    await this.bfs.search(this.grid);
-    this.userState = UserSelectionState.IDLE;
-  }
-
   private selectStartPoint(row: number, col: number): void {
     this.grid.setStartPoint(row, col);
   }
 
   private selectTargetPoint(row: number, col: number): void {
     this.grid.setTargetPoint(row, col);
+  }
+
+  public async breadthFirstSearch(): Promise<void> {
+    this.userState = UserSelectionState.SEARCH_RUNNING;
+    var targetCell: GridCell = await this.bfs.search(this.grid);
+
+    if (!targetCell) {
+      this.searchResultMessage = "Target Not found!";
+    } else {
+      this.searchResultMessage = "Target was found!";
+      
+      var cell: GridCell = targetCell;
+
+      while(cell) {
+        this.grid.addToPathRoute(cell);
+        cell = cell.parentCell;
+      }
+      
+    }
+
+
+    this.userState = UserSelectionState.IDLE;
   }
 
 }

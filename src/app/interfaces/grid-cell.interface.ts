@@ -1,12 +1,14 @@
 export class GridCell {
     private row: number;
     private col: number;
+    parentCell: GridCell;
     state: GridState;
     class: GridClass;
 
     public constructor(row: number, col: number, state: GridState) {
         this.row = row;
         this.col = col;
+        this.parentCell = null;
         this.setState(state);
     }
 

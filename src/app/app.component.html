@@ -31,6 +31,9 @@
         <h5>#3: Click on grid to add any obstacle.</h5>
         <h5>#4: Select the short path method:</h5>
       </div>
+      <div *ngIf="searchResultMessage">
+        <h5>{{searchResultMessage}}</h5>
+      </div>
       <div *ngIf="userState == 2">
         <div class="row mt-4">
           <button type="button" class="btn btn-primary btn-block" (click)="breadthFirstSearch()">Breadth-First Search</button>      

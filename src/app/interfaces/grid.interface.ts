@@ -41,12 +41,42 @@ export class Grid {
         this.grid[cell.getRow()][cell.getCol()].setState(GridState.VISITED);
     }
 
+    public addToPathRoute(cell: GridCell) {
+        this.grid[cell.getRow()][cell.getCol()].setState(GridState.START_POINT);
+    }
+
     public addObstacle(row: number, col: number) {
         this.grid[row][col].setState(GridState.BLOCKED);
     }
 
     public getGrid(): GridCell[][] {
         return this.grid;
+    }
+
+    public findNeighbors(cell: GridCell): GridCell[] {
+        var lastValidIndex: number = this.size - 1;
+        var neighbors: GridCell[] = [];    
+        
+        var cellRow = cell.getRow();
+        var cellCol = cell.getCol();
+
+        if (cellRow > 0 && this.grid[cellRow - 1][cellCol].state != GridState.BLOCKED) {
+            neighbors.push(this.grid[cellRow - 1][cellCol]);
+        }
+
+        if (cellRow < lastValidIndex && this.grid[cellRow + 1][cellCol].state != GridState.BLOCKED) {
+            neighbors.push(this.grid[cellRow + 1][cellCol]);
+        }
+
+        if (cellCol > 0 && this.grid[cellRow][cellCol - 1].state != GridState.BLOCKED) {
+            neighbors.push(this.grid[cellRow][cellCol - 1]);
+        }
+
+        if (cellCol < lastValidIndex && this.grid[cellRow][cellCol + 1].state != GridState.BLOCKED) {
+            neighbors.push(this.grid[cellRow][cellCol + 1]);
+        }
+
+        return neighbors;
     }
 
     private buildGrid(size: number): GridCell[][] {
