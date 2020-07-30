@@ -9,7 +9,7 @@ export abstract class AbstractSearchService {
 
     protected async visitCell(grid: Grid, cell: GridCell) {
         grid.visitCell(cell);
-        await new Promise(r => setTimeout(r, 20)); 
+        await new Promise(r => setTimeout(r, 10)); 
     }
 
     protected buildBooleanGrid(size: number): boolean[][] {

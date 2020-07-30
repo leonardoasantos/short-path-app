@@ -1,14 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
-.grid-container {
+:root {
+    --backgroud-color: rgba(20,20,20,0.9);
+    --grid-boder-color: rgba(20,20,20,0.4);
+}
+
+body {
+    background-color: var(--backgroud-color);
+}
+.menu-container {
+    padding: 30px;
+    background-color:rgb(220,220,220);
+}
+
+.grid-container {    
     padding: 30px;
 }
 
 .grid-cell {
     border-style: solid;    
     border-width: 1px;
-    border-color: grey;
+    border-color: var(--grid-boder-color);
     width: 20px;
     height: 20px;
 }
@@ -16,14 +29,18 @@
 .grid-cell-start-point {
     background-color: blue;
 }
+.grid-cell-empty {
+    background-color: white;
+}
+
 .grid-cell-target-point {
     background-color: red;
 }
 
 .grid-cell-visited{
-    background-color: green;
+    background-color: rgba(88,239,153,0.8);
 }
 
 .grid-cell-blocked{
-    background-color: black;
+    background-color: var(--backgroud-color);
 }

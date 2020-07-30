@@ -24,10 +24,13 @@ export class BreadthFirstSearchService extends AbstractSearchService {
       
       // Visit first cell from the queue.
       var currentCell: GridCell = queue.shift();
-      await this.visitCell(grid, currentCell);
+
+      if (!currentCell.equals(startPoint)) {
+        await this.visitCell(grid, currentCell);
+      }
       
+      // Check if Target was found.
       if (currentCell.equals(targetPoint)) {
-        console.log("Target found!")
         return;
       }
 
