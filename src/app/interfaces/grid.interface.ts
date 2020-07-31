@@ -60,23 +60,20 @@ export class Grid {
         var cellRow = cell.getRow();
         var cellCol = cell.getCol();
 
-        if (cellRow > 0) {
-            neighbors.push(this.grid[cellRow - 1][cellCol]);
+        var minRow = cellRow == 0 ? 0 : cellRow - 1;
+        var maxRow = cellRow == lastValidIndex ? lastValidIndex : cellRow + 1;
+
+        var minCol = cellCol == 0 ? 0 : cellCol - 1;
+        var maxCol = cellCol == lastValidIndex ? lastValidIndex : cellCol + 1;
+
+        for (var row = minRow; row <= maxRow; row++) {
+            for(var col = minCol; col <= maxCol; col++) {
+                neighbors.push(this.grid[row][col]);
+            }
         }
 
-        if (cellRow < lastValidIndex) {
-            neighbors.push(this.grid[cellRow + 1][cellCol]);
-        }
-
-        if (cellCol > 0) {
-            neighbors.push(this.grid[cellRow][cellCol - 1]);
-        }
-
-        if (cellCol < lastValidIndex) {
-            neighbors.push(this.grid[cellRow][cellCol + 1]);
-        }
-
-        return neighbors.filter(n => n.state != GridState.BLOCKED);
+        return neighbors.filter(n => n.state != GridState.BLOCKED)
+                        .filter(n => !n.equals(cell));
     }
 
     private buildGrid(size: number): GridCell[][] {
