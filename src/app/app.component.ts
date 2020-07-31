@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Grid } from './interfaces/grid.interface';
-import { GridCell } from './interfaces/grid-cell.interface';
+import { GridCell, GridState } from './interfaces/grid-cell.interface';
 import { UserSelectionState } from './interfaces/user-selection-state.interface';
 import { BreadthFirstSearchService } from './services/breadth-first-search.service';
+import { AStarSearchService } from './services/a-star-search.service';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,7 @@ export class AppComponent implements OnInit {
 
   private gridSize: number;
 
-  public constructor(private bfs: BreadthFirstSearchService){};
+  public constructor(private bfs: BreadthFirstSearchService, private aStar: AStarSearchService){};
 
   ngOnInit() {
     this.gridSize = 50;
@@ -92,17 +94,26 @@ export class AppComponent implements OnInit {
   public async breadthFirstSearch(): Promise<void> {
     this.userState = UserSelectionState.SEARCH_RUNNING;
     var targetCell: GridCell = await this.bfs.search(this.grid);
+    this.showSearchResult(targetCell);
+  }
 
-    if (!targetCell) {
+  public async aStarSearch(): Promise<void> {
+    this.userState = UserSelectionState.SEARCH_RUNNING;
+    var targetCell: GridCell = await this.aStar.search(this.grid);
+    this.showSearchResult(targetCell);
+  }
+
+  private showSearchResult(cell: GridCell): void {
+    if (!cell) {
       this.searchResultMessage = "Target Not found!";
     } else {
       this.searchResultMessage = "Target was found!";
       
-      var cell: GridCell = targetCell;
+      var routeCell: GridCell = cell;
 
-      while(cell) {
-        this.grid.addToPathRoute(cell);
-        cell = cell.parentCell;
+      while(routeCell) {
+        this.grid.addToPathRoute(routeCell);
+        routeCell = routeCell.parentCell;
       }
       
     }
