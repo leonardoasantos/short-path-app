@@ -7,6 +7,8 @@ import { Grid } from '../interfaces/grid.interface';
 })
 export abstract class AbstractSearchService {
 
+    abstract getDescription(): string;
+    
     protected async visitCell(grid: Grid, cell: GridCell) {
         grid.visitCell(cell);
         await new Promise(r => setTimeout(r, 10)); 

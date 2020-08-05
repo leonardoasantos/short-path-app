@@ -4,7 +4,7 @@ import { GridCell, GridState } from './interfaces/grid-cell.interface';
 import { UserSelectionState } from './interfaces/user-selection-state.interface';
 import { BreadthFirstSearchService } from './services/breadth-first-search.service';
 import { AStarSearchService } from './services/a-star-search.service';
-import { EMPTY } from 'rxjs';
+import SampleGridBlocks from '../assets/grids/sample-blocks.json'
 
 @Component({
   selector: 'app-root',
@@ -17,27 +17,46 @@ export class AppComponent implements OnInit {
   
   public userState: UserSelectionState;
 
-  public searchResultMessage: string
+  public gridSamples = [SampleGridBlocks];
 
+  public instructions = ["Do you want to select a pre-defined grid?", 
+                          "#1: Choose your start position", 
+                          "#2: Choose your target position", 
+                          "#3: Click on grid to add any obstacle.", 
+                          "#4: Select the short path method:"];
+
+  public searchDescription: string;
+
+  public searchResultMessage: string;
+  
   private gridSize: number;
-
+  
   public constructor(private bfs: BreadthFirstSearchService, private aStar: AStarSearchService){};
 
   ngOnInit() {
     this.gridSize = 50;
-    this.resetGrid();
+    this.resetGrid();        
   }
   
   public resetGrid(): void {
     this.grid = new Grid(this.gridSize);
-    this.userState = UserSelectionState.SELECT_START_POINT;
+    this.userState = UserSelectionState.CHOOSE_SAMPLE_GRID;
     this.searchResultMessage = null;
+    this.searchDescription = null;
+  }
+
+  public loadGridSample(bGrid: boolean[][]): void {
+    if (bGrid) {
+      this.grid.loadGrid(bGrid);  
+    }
+    this.userState = UserSelectionState.SELECT_START_POINT;
   }
 
   public onGridClick(row: number, col: number) {
     
     switch (this.userState) {
       
+      case UserSelectionState.CHOOSE_SAMPLE_GRID:
       case UserSelectionState.SEARCH_RUNNING:
         break;
 
@@ -93,12 +112,14 @@ export class AppComponent implements OnInit {
 
   public async breadthFirstSearch(): Promise<void> {
     this.userState = UserSelectionState.SEARCH_RUNNING;
+    this.searchDescription = this.bfs.getDescription();
     var targetCell: GridCell = await this.bfs.search(this.grid);
     this.showSearchResult(targetCell);
   }
 
   public async aStarSearch(): Promise<void> {
     this.userState = UserSelectionState.SEARCH_RUNNING;
+    this.searchDescription = this.aStar.getDescription();
     var targetCell: GridCell = await this.aStar.search(this.grid);
     this.showSearchResult(targetCell);
   }

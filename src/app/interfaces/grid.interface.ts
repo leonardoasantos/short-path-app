@@ -10,7 +10,7 @@ export class Grid {
         this.size = size;
         this.grid = this.buildGrid(size);
     }
-    
+        
     public get(row: number, col: number): GridCell {
         return this.grid[row][col];
     }
@@ -51,6 +51,16 @@ export class Grid {
 
     public getGrid(): GridCell[][] {
         return this.grid;
+    }
+
+    public loadGrid(sampleGrid: boolean[][]) {
+        for(var row = 0; row < this.size; row++) {
+            for(var col = 0; col < this.size; col++) {
+                if (sampleGrid[row][col]) {
+                    this.addObstacle(row, col);
+                }
+            }
+        }
     }
 
     public findNeighbors(cell: GridCell): GridCell[] {

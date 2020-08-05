@@ -21,30 +21,55 @@
   <!-- Menu Column -->
   <div class="col-md-4 menu-container">
     <div class="menu-container2">
+      <!-- Sample Grid Selction -->
       <div *ngIf="userState == 0">
-        <h5>#1: Choose your start position</h5>
+        <h5>{{instructions[0]}}</h5>
+        <div class="row mt-4">
+          <button type="button" class="btn btn-primary btn-block" (click)="loadGridSample(gridSamples[0])">City Blocks</button>      
+          <button type="button" class="btn btn-warning btn-block" (click)="loadGridSample(null)">No, thanks</button>      
+        </div>
       </div>
+
+      <!-- Start Point Selection -->
       <div *ngIf="userState == 1">
-        <h5>#2: Choose your target position</h5>
+        <h5>{{instructions[1]}}</h5>
       </div>
+
+      <!-- Target Point Selection -->
       <div *ngIf="userState == 2">
-        <h5>#3: Click on grid to add any obstacle.</h5>
-        <h5>#4: Select the short path method:</h5>
+        <h5><del>{{instructions[1]}}</del></h5>
+        <h5>{{instructions[2]}}</h5>
       </div>
-      <div *ngIf="searchResultMessage">
-        <h5>{{searchResultMessage}}</h5>
-      </div>
-      <div *ngIf="userState == 2">
+
+      <!-- Search Method Point Selection -->
+      <div *ngIf="userState > 2">
+        <h5><del>{{instructions[1]}}</del></h5>
+        <h5><del>{{instructions[2]}}</del></h5>        
+        <h5>{{instructions[3]}}</h5>
+        <h5>{{instructions[4]}}</h5>        
         <div class="row mt-4">
-          <button type="button" class="btn btn-primary btn-block" (click)="breadthFirstSearch()">Breadth-First Search</button>      
-        </div>
-        <div class="row mt-4">
-          <button type="button" class="btn btn-primary btn-block" (click)="aStarSearch()">A* Search</button>      
+          <div class="col-md-12 ml-auto" *ngIf="userState > 2 && userState < 5">
+            <button type="button" class="btn btn-primary mr-2" (click)="breadthFirstSearch()">Breadth-First Search</button>      
+            <button type="button" class="btn btn-primary mr-2" (click)="aStarSearch()">A* Search</button>      
+          </div>
         </div>
       </div>
-      <div class="row mt-4">
+
+      <!-- Search Result Message -->
+      <div class="mt-4" *ngIf="searchResultMessage">
+        <h5>Result: {{searchResultMessage}}</h5>
+      </div>
+
+      <!-- Search Result Message -->
+      <div class="mt-4" *ngIf="searchDescription" style="white-space: pre;">
+        <label>{{searchDescription}}</label>
+      </div>
+
+      <!-- Reset Button -->
+      <div class="row mt-4" *ngIf="userState != 0">
         <button type="button" class="btn btn-warning btn-block" (click)="resetGrid()">Reset</button>
       </div>
+
     </div>
   </div>
 

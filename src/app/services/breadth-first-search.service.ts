@@ -51,4 +51,21 @@ export class BreadthFirstSearchService extends AbstractSearchService {
 
     return null;
   }    
+
+  public getDescription(): string {
+    return "Breadth-First Search Algorithm:\n" +
+           "1. Create a Queue\n"+
+           "2. Create a boolean grid  to track the visited elements\n" +           
+           "2. Add Start position to the queue \n" +
+           "3. While queue is not empty:  \n" +
+           "   a) Pop a node from the queue (currentCell) \n" +
+           "   b) If the node is the Target Position, returns the node \n" +
+           "   b) Find the currentCell's neighbors  \n" +
+           "   c) For each neighbor  \n" +
+           "         i) If neighbor was not visited: \n" +
+           "         - Set neighbor's parent to currentCell\n" +
+           "         - Set neighbor as visited\n" +
+           "         - Add neighbor to the queue\n" +
+           "4. End of loop"           
+  }
 }

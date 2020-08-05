@@ -34,7 +34,6 @@ export class AStarSearchService extends AbstractSearchService {
 
       for (var neighbor of neighbors) {
         
-        
         if (neighbor.equals(targetPosition)) {
           neighbor.parentCell = currentCell;
           return neighbor;
@@ -60,5 +59,26 @@ export class AStarSearchService extends AbstractSearchService {
     var yDistance = Math.abs(cellA.getCol() - cellB.getCol());
     return xDistance + yDistance;
   }
-
+  
+  public getDescription(): string {
+    return "A* Search Algorithm:\n" +
+           "1. Create a Priority Queue\n"+
+           "2. Create a grid to track each element distance (distanceGrid)\n" +
+           "   a) Initialize the distance for elements (except start point) as infinity\n" +
+           "3. Add Start position to the queue \n" +
+           "4. While queue is not empty:  \n" +
+           "   a) Pop the node with the smallest distance (currentCell)\n" +
+           "   b) Find the currentCell's neighbors  \n" +
+           "   c) For each neighbor  \n" +
+           "         i) If neighbor is the target position stop search\n" +
+           "         - Set neighbor's parent to currentCell\n" +           
+           "         - Returns neighbor\n" +           
+           "         ii) Calculate the distance associated to the neighbor:\n" +
+           "           distance = distance(start, neighbor) + distance(neighbor, target) \n" +
+           "         iii) if neighbor's distance is smaller than its previous calculated distance\n" +
+           "         - Update distanceGrid with the new distance\n" +
+           "         - Set neighbor's parent to currentCell\n" +
+           "         - Add neighbor to the queue\n" +
+           "5. End of loop"           
+  }
 }
