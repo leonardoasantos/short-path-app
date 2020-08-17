@@ -5,6 +5,8 @@ import { UserSelectionState } from './interfaces/user-selection-state.interface'
 import { BreadthFirstSearchService } from './services/breadth-first-search.service';
 import { AStarSearchService } from './services/a-star-search.service';
 import SampleGridBlocks from '../assets/grids/sample-blocks.json'
+import Grid30Hidden from '../assets/grids/grid-30-hidden.json'
+import Grid50Hidden from '../assets/grids/grid-50-hidden.json'
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,7 @@ export class AppComponent implements OnInit {
   
   public userState: UserSelectionState;
 
-  public gridSamples = [SampleGridBlocks];
+  public gridSamples = [SampleGridBlocks, Grid30Hidden, Grid50Hidden];
 
   public instructions = ["Do you want to select a pre-defined grid?", 
                           "#1: Choose your start position", 
