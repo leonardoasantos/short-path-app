@@ -57,7 +57,7 @@ export class AStarSearchService extends AbstractSearchService {
   private calcDistance(cellA: GridCell, cellB: GridCell): number {
     var xDistance = Math.abs(cellA.getRow() - cellB.getRow());
     var yDistance = Math.abs(cellA.getCol() - cellB.getCol());
-    return xDistance + yDistance;
+    return Math.sqrt( (xDistance * xDistance) + (yDistance * yDistance))
   }
   
   public getDescription(): string {
