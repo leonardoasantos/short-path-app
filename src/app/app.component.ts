@@ -5,6 +5,8 @@ import { UserSelectionState } from './interfaces/user-selection-state.interface'
 import { BreadthFirstSearchService } from './services/breadth-first-search.service';
 import { AStarSearchService } from './services/a-star-search.service';
 import SampleGridBlocks from '../assets/grids/sample-blocks.json'
+import Grid30Hidden from '../assets/grids/grid-30-hidden.json'
+import Grid50Hidden from '../assets/grids/grid-50-hidden.json'
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,7 @@ export class AppComponent implements OnInit {
   
   public userState: UserSelectionState;
 
-  public gridSamples = [SampleGridBlocks];
+  public gridSamples = [SampleGridBlocks, Grid30Hidden, Grid50Hidden];
 
   public instructions = ["Do you want to select a pre-defined grid?", 
                           "#1: Choose your start position", 
@@ -31,13 +33,15 @@ export class AppComponent implements OnInit {
   
   private gridSize: number;
   
+  readonly gridMaxSize: number = 50;
+
   public constructor(private bfs: BreadthFirstSearchService, private aStar: AStarSearchService){};
 
   ngOnInit() {
-    this.gridSize = 50;
+    this.gridSize = this.calcGridMaxSize();
     this.resetGrid();        
   }
-  
+
   public resetGrid(): void {
     this.grid = new Grid(this.gridSize);
     this.userState = UserSelectionState.CHOOSE_SAMPLE_GRID;
@@ -143,4 +147,21 @@ export class AppComponent implements OnInit {
     this.userState = UserSelectionState.IDLE;
   }
 
+  private calcGridMaxSize(): number {
+    const gridCellSize = 20;
+    const paddingSize = 30;
+    const windowSize = window.innerWidth * 0.92;
+    const bootsrapMdSize = 768;
+
+    if (windowSize <= bootsrapMdSize) {
+      return windowSize / gridCellSize;
+    }
+
+    const domColSize = 8;
+    const domMaxSize = 12;
+
+    var gridSize = (domColSize / domMaxSize) * windowSize / gridCellSize;
+
+    return gridSize > this.gridSize ? this.gridSize : gridSize;
+  }
 }

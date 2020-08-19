@@ -14,7 +14,7 @@
   <!-- Main Grid -->
   <div class="col-md-8">
     <div class="grid-container" (mouseup)="mouseUp()">      
-      <div *ngFor="let row of grid.getGrid(); let i = index" class="row">
+      <div #gridMap *ngFor="let row of grid.getGrid(); let i = index" class="row">
         <div *ngFor="let cell of row; let j = index">
           <div class="grid-cell {{cell.class}}" (mousedown)="onGridClick(i,j)"  (mouseover)="mouseOver(i,j)"></div>
         </div>      
@@ -29,7 +29,9 @@
       <div *ngIf="userState == 0">
         <h5>{{instructions[0]}}</h5>
         <div class="row mt-4">
-          <button type="button" class="btn btn-primary btn-block" (click)="loadGridSample(gridSamples[0])">City Blocks</button>      
+          <button type="button" class="btn btn-primary btn-block" (click)="loadGridSample(gridSamples[0])">City Blocks</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="loadGridSample(gridSamples[1])">30% Blocked</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="loadGridSample(gridSamples[2])">50% Blocked</button>
           <button type="button" class="btn btn-warning btn-block" (click)="loadGridSample(null)">No, thanks</button>      
         </div>
       </div>
