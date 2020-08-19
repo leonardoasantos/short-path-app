@@ -12,9 +12,9 @@
 <div class="row">
 
   <!-- Main Grid -->
-  <div class="col-md-9">
+  <div class="col-md-8">
     <div class="grid-container" (mouseup)="mouseUp()">      
-      <div *ngFor="let row of grid.getGrid(); let i = index" class="row">
+      <div #gridMap *ngFor="let row of grid.getGrid(); let i = index" class="row">
         <div *ngFor="let cell of row; let j = index">
           <div class="grid-cell {{cell.class}}" (mousedown)="onGridClick(i,j)"  (mouseover)="mouseOver(i,j)"></div>
         </div>      
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Menu Column -->
-  <div class="col-md-3 menu-container">
+  <div class="col-md-4 menu-container">
     <div class="menu-container2">
       <!-- Sample Grid Selction -->
       <div *ngIf="userState == 0">

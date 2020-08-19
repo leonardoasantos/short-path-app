@@ -33,13 +33,15 @@ export class AppComponent implements OnInit {
   
   private gridSize: number;
   
+  readonly gridMaxSize: number = 50;
+
   public constructor(private bfs: BreadthFirstSearchService, private aStar: AStarSearchService){};
 
   ngOnInit() {
-    this.gridSize = 50;
+    this.gridSize = this.calcGridMaxSize();
     this.resetGrid();        
   }
-  
+
   public resetGrid(): void {
     this.grid = new Grid(this.gridSize);
     this.userState = UserSelectionState.CHOOSE_SAMPLE_GRID;
@@ -145,4 +147,21 @@ export class AppComponent implements OnInit {
     this.userState = UserSelectionState.IDLE;
   }
 
+  private calcGridMaxSize(): number {
+    const gridCellSize = 20;
+    const paddingSize = 30;
+    const windowSize = window.innerWidth * 0.92;
+    const bootsrapMdSize = 768;
+
+    if (windowSize <= bootsrapMdSize) {
+      return windowSize / gridCellSize;
+    }
+
+    const domColSize = 8;
+    const domMaxSize = 12;
+
+    var gridSize = (domColSize / domMaxSize) * windowSize / gridCellSize;
+
+    return gridSize > this.gridSize ? this.gridSize : gridSize;
+  }
 }
