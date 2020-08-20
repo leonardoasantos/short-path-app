@@ -150,11 +150,11 @@ export class AppComponent implements OnInit {
   private calcGridMaxSize(): number {
     const gridCellSize = 20;
     const paddingSize = 30;
-    const windowSize = window.innerWidth * 0.92;
+    const windowSize = 0.85 * window.innerWidth;
     const bootsrapMdSize = 768;
 
     if (windowSize <= bootsrapMdSize) {
-      return windowSize / gridCellSize;
+      return Math.ceil( windowSize / gridCellSize );
     }
 
     const domColSize = 8;
@@ -162,6 +162,6 @@ export class AppComponent implements OnInit {
 
     var gridSize = (domColSize / domMaxSize) * windowSize / gridCellSize;
 
-    return gridSize > this.gridSize ? this.gridSize : gridSize;
+    return gridSize > this.gridMaxSize ? this.gridMaxSize : Math.ceil(gridSize);
   }
 }
